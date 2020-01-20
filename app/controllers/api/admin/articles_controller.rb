@@ -5,7 +5,7 @@ class Api::Admin::ArticlesController < ApplicationController
     authorize(current_user)
     
     article = current_user.articles.create(article_params)
-    
+
     if article.persisted?
       render head: :ok
     else
@@ -13,10 +13,15 @@ class Api::Admin::ArticlesController < ApplicationController
     end
   end
 
+  def update
+    authorize(current_user)
+    
+    Article.update(params[:id], published: params[:article][:published])
+  end
+
   private
 
   def article_params
     params.require(:article).permit(:title, :body)
   end
-
 end

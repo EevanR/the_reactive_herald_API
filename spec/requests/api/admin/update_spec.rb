@@ -2,10 +2,11 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
   let(:editor)  { create(:editor)}
   let(:editor_credentials) { editor.create_new_auth_token }
   let!(:editor_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(editor_credentials) }
+  let!(:article) { create(:article)}
 
   describe 'Successfully publishes article' do
     before do
-      post "/api/admin/articles/1",
+      patch "/api/admin/articles/#{article.id}",
       params: {
         article: {
           published: true
@@ -15,7 +16,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
     end
     
     it 'returns a 200 response status' do
-      expect(response).to have_http_status 200
+      expect(response).to have_http_status 204
     end
   end
 
@@ -23,7 +24,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
     describe 'non logged in user' do
       let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
       before do
-        post "/api/admin/articles/1",
+        patch "/api/admin/articles/1",
         params: {
           article: {
             published: true
@@ -47,7 +48,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
     
       before do
-        post "/api/admin/articles/1",
+        patch "/api/admin/articles/1",
         params: {
           article: {
             published: true
@@ -64,6 +65,5 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
         expect(response_json["error"]).to eq "Not authorized!"
       end
     end
-
   end
 end
