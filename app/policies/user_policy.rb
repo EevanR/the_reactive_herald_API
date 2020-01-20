@@ -10,6 +10,6 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    @user.editor?
+    @user.publisher?
   end
 end

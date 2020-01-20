@@ -4,10 +4,12 @@ RSpec.describe Article, type: :model do
     it { is_expected.to have_db_column :body }
     it { is_expected.to have_db_column :journalist_id }
     it { is_expected.to have_db_column :published }
+    it { is_expected.to have_db_column :publisher_id }
   end
 
   describe 'Associations' do
     it { is_expected.to belong_to :journalist }
+    it { is_expected.to belong_to(:publisher).optional }
   end
 
   describe 'Factory' do

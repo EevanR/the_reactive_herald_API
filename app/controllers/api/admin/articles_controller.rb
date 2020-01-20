@@ -3,7 +3,6 @@ class Api::Admin::ArticlesController < ApplicationController
 
   def create
     authorize(current_user)
-    
     article = current_user.articles.create(article_params)
 
     if article.persisted?
@@ -15,8 +14,8 @@ class Api::Admin::ArticlesController < ApplicationController
 
   def update
     authorize(current_user)
-    
-    Article.update(params[:id], published: params[:article][:published])
+
+    Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
   end
 
   private

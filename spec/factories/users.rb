@@ -8,9 +8,9 @@ FactoryBot.define do
       email { "user2@mail.com" }
       role { "journalist" }
     end
-    factory :editor do
+    factory :publisher do
       email { "user3@mail.com" }
-      role { "editor" }
+      role { "publisher" }
     end
   end
 end

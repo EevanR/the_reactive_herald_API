@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'should have valid Factory' do
-      expect(create(:editor)).to be_valid
+      expect(create(:publisher)).to be_valid
     end
   end
 end

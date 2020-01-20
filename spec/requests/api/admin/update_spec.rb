@@ -1,7 +1,7 @@
 RSpec.describe 'POST /api/admin/articles', type: :request do
-  let(:editor)  { create(:editor)}
-  let(:editor_credentials) { editor.create_new_auth_token }
-  let!(:editor_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(editor_credentials) }
+  let(:publisher)  { create(:publisher)}
+  let(:publisher_credentials) { publisher.create_new_auth_token }
+  let!(:publisher_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(publisher_credentials) }
   let!(:article) { create(:article)}
 
   describe 'Successfully publishes article' do
@@ -12,7 +12,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
           published: true
         }
       },
-      headers: editor_headers
+      headers: publisher_headers
     end
     
     it 'returns a 200 response status' do
@@ -42,7 +42,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       end
     end
 
-    describe 'user that is not an editor' do
+    describe 'user that is not a publisher' do
       let(:journalist) { create(:user, role: 'journalist')}
       let(:journalist_credentials) { journalist.create_new_auth_token }
       let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
