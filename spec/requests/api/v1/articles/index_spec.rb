@@ -1,16 +1,15 @@
 RSpec.describe 'GET /api/v1/articles', type: :request do
-  let(:headers) { { HTTP_ACCEPT: 'application/json' } }
+  let(:journalist) { create(:journalist)}
+  let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' } }
   let!(:article) do
     10.times do
-      create(:article,
-            title: 'Breaking News',
-            body: 'Some breaking content'*10)
+      create(:article, journalist_id: journalist.id)
     end
   end
 
   describe 'Get first page' do
     before do
-      get '/api/v1/articles', headers: headers
+      get '/api/v1/articles'
     end
 
     it 'return a 200 response status' do
@@ -32,7 +31,7 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
 
   describe 'Get second page' do
     before do
-      get '/api/v1/articles', params: { page: 2 }, headers: headers
+      get '/api/v1/articles', params: { page: 2 }
     end
 
     it 'return a 200 response status' do

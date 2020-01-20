@@ -1,10 +1,6 @@
 RSpec.describe 'GET /api/v1/articles/:id', type: :request do
   let(:headers) { { HTTP_ACCEPT: 'application/json' } }
-  let!(:article) do
-    create(:article,
-          title: 'Breaking News',
-          body: 'Some breaking content')
-  end
+  let!(:article) { create(:article)}
 
   describe 'Successfully' do
     before do
