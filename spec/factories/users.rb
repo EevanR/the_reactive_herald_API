@@ -6,7 +6,7 @@ FactoryBot.define do
     role {"user"}
     factory :journalist do
       email { "user2@mail.com" }
-      role { :journalist }
+      role { "journalist" }
     end
   end
     
