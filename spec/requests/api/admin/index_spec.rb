@@ -1,4 +1,4 @@
-RSpec.describe 'POST /api/admin/articles', type: :request do
+RSpec.describe 'GET/api/admin/articles', type: :request do
   let(:publisher)  { create(:publisher)}
   let(:publisher_credentials) { publisher.create_new_auth_token }
   let!(:publisher_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(publisher_credentials) }
@@ -7,12 +7,13 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       create(:article)
     end
   end
-  let!(:published_article) { create(:article) }
+  let!(:published_article) { create(:article,published:true) }
 
 
   describe 'Successfully lists unpublished articles' do
     before do
-      get '/api/admin/articles'
+      get '/api/admin/articles',
+      headers:publisher_headers
     end
     
     it 'returns a 200 response status' do
