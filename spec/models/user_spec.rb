@@ -20,5 +20,9 @@ RSpec.describe User, type: :model do
     it 'should have valid Factory' do
       expect(create(:journalist)).to be_valid
     end
+
+    it 'should have valid Factory' do
+      expect(create(:publisher)).to be_valid
+    end
   end
 end
