@@ -4,7 +4,11 @@ class Articles::IndexSerializer < ActiveModel::Serializer
   attributes :id, :title, :body
 
   def body
-    truncate(object.body, length: 75)
+    if instance_options[:role] == 'publisher'
+      object.body
+    else
+      truncate(object.body, length: 75)
+    end
   end
 
 end

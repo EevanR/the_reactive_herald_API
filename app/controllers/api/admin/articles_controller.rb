@@ -17,8 +17,12 @@ class Api::Admin::ArticlesController < ApplicationController
 
     Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
   end
+
   def index
     authorize(current_user)
+
+    articles = Article.where(published: false)
+    render json: articles, each_serializer: Articles::IndexSerializer, role: current_user.role
   end
 
   private
