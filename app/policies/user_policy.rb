@@ -17,8 +17,4 @@ class UserPolicy < ApplicationPolicy
     @user.publisher?
   end
 
-  def show?
-    @record == @user
-  end
-
 end

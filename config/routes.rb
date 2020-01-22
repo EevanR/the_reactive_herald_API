@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :admin do
-      get 'users/show'
-    end
-  end
   get 'users/show'
   mount_devise_token_auth_for 'User', at: 'api/v1/auth', skip: [:omniauth_callbacks]
   namespace :api do
