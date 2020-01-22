@@ -12,5 +12,9 @@ FactoryBot.define do
       email { "user#{rand(1...9999)}@mail.com" }
       role { "publisher" }
     end
+    factory :subscriber do
+      email { "user#{rand(1...9999)}@mail.com" }
+      role { "subscriber" }
+    end
   end
 end
