@@ -3,9 +3,8 @@ class Api::Admin::ArticlesController < ApplicationController
 
   def create
     authorize(current_user)
-    
     article = current_user.articles.create(article_params)
-    
+
     if article.persisted?
       render head: :ok
     else
@@ -13,10 +12,22 @@ class Api::Admin::ArticlesController < ApplicationController
     end
   end
 
+  def update
+    authorize(current_user)
+
+    Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
+  end
+
+  def index
+    authorize(current_user)
+
+    articles = Article.where(published: false)
+    render json: articles, each_serializer: Articles::IndexSerializer, role: current_user.role
+  end
+
   private
 
   def article_params
     params.require(:article).permit(:title, :body)
   end
-
 end

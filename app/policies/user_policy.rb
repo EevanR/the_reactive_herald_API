@@ -8,4 +8,12 @@ class UserPolicy < ApplicationPolicy
 	def create?
     @user.journalist?
   end
+
+  def update?
+    @user.publisher?
+  end
+  
+  def index?
+    @user.publisher?
+  end
 end

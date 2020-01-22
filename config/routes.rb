@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       resources :articles, only: [:show, :index]
     end
     namespace :admin, defaults: { format: :json } do
-      resources :articles, only: [:create]
+      resources :articles, only: [:create, :update, :index]
     end
   end
 end
