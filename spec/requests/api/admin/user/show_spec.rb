@@ -1,11 +1,11 @@
 RSpec.describe 'GET/api/admin/users', type: :request do
-  let(:subscriber)  { create(:subscriber)}
-  let(:subscriber_credentials) { subscriber.create_new_auth_token }
-  let!(:subscriber_headers) {{ HTTP_ACCEPT: 'application/json' }}
+  let(:user)  { create(:user)}
+  let(:user_credentials) { user.create_new_auth_token }
+  let!(:user_headers) {{ HTTP_ACCEPT: 'application/json' }.merge!(user_credentials)}
 
   describe 'Succesfully show profile page' do
     before do
-      get "/api/admin/users/#{subscriber.id}", headers: subscriber_headers
+      get "/api/admin/users/#{user.id}", headers: user_headers
     end
 
     it 'returns a 200 response status' do
@@ -13,24 +13,18 @@ RSpec.describe 'GET/api/admin/users', type: :request do
     end
 
     it 'returns user email' do
-      expect(response_json["user"]["email"]).to eq (subscriber.email)
-    end
-
-    it 'returns user role as subscriber' do
-      expect(response_json["user"]["role"]).to eq "subscriber"
+      expect(response_json["user"]["email"]).to eq (user.email)
     end
   end
 
-  describe 'Unsuccesfully show profile page' do
-    let(:user)  { create(:user)}
-    let(:user_credentials) { user.create_new_auth_token }
-    let!(:user_headers) {{ HTTP_ACCEPT: 'application/json' }}
+  describe 'Cant see profile page unless authorized' do
+    let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
     before do
-      get "/api/admin/users/#{user.id}", headers: subscriber_headers
+      get "/api/admin/users/#{user.id}", headers: non_authorized_headers
     end
 
-    it 'returns a 200 response status' do
-      expect(response).to have_http_status 200
+    it 'returns a 401 response status' do
+      expect(response).to have_http_status 401
     end
   end
 end
