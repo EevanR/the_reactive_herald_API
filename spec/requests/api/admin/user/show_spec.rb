@@ -1,5 +1,5 @@
 RSpec.describe 'GET/api/admin/users', type: :request do
-  let(:user)  { create(:user)}
+  let(:user) { create(:user) }
   let(:user_credentials) { user.create_new_auth_token }
   let!(:user_headers) {{ HTTP_ACCEPT: 'application/json' }.merge!(user_credentials)}
   let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
