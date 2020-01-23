@@ -1,15 +1,12 @@
-class SubscriptionsController < ApplicationController
-
-  def new
-    
-  end
-
+class Api::V1::SubscriptionsController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     customer = Stripe::Customer.create(
-      email: current_user.email,
-      source: stripe_token(params),
-      description: 'Crafty News Subscriber'
+      email: params[:stripeEmail],
+      source: params[:stripeToken]
     )
+    render json: customer
   end
 
 end

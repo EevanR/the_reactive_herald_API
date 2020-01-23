@@ -5,28 +5,21 @@ RSpec.describe 'USer can buy subscritption' do
     before(:each) { StripeMock.start }
     after(:each) { StripeMock.stop }
   let(:user) { create(:user) }
-  let(:headers) { { HTTP_ACCEPT: 'application/json' } }
+  let(:user_credentials) { user.create_new_auth_token }
+  let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(user_credentials) }
 
-  describe "User would like to pay for subscritption" do
-    it 'User pays for subscritption' do
-      binding.pry
-      customer = Stripe::Customer.create({
-        email: 'user@mail.com',
-        source: stripe_helper.generate_card_token
-      })
-      expect(customer.email).to eq('user@mail.com')
+  let(:successful_token) { post '/api/v1/subscriptions', params: {  stripeEmail: user.email,
+    stripeToken: stripe_helper.generate_card_token    
+    }, headers: headers
+      user.reload }
+
+  describe "User pays for subscritption" do
+    before do
+      successful_token
     end
 
-    it 'User has insufficent funds' do
-
-    end
-
-    it 'User has expired card' do
-
-    end
-
-    it 'User inputs invalid card number' do
-
+    it 'Successfully and becomes subscriber' do
+      expect(response).to have_http_status 200
     end
 
   end
