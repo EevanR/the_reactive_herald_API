@@ -28,7 +28,5 @@ module TheReactiveHeraldApi
           max_age: 0
       end
     end
-    config.stripe.secret_key = Rails.application.credentials.stripe[:secret_key]
-    config.stripe.publishable_key = Rails.application.credentials.stripe[:publishable_key]
   end
 end
