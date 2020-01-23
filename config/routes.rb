@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     namespace :admin, defaults: { format: :json } do
       resources :articles, only: [:create, :update, :index]
       resources :users, only: [:show]
+      resources :subscriptions, only: [:new, :create]
     end
   end
 end
