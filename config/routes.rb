@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     end
     namespace :admin, defaults: { format: :json } do
       resources :articles, only: [:create, :update, :index]
+      resources :users, only: [:show]
     end
   end
 end

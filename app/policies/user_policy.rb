@@ -16,4 +16,5 @@ class UserPolicy < ApplicationPolicy
   def index?
     @user.publisher?
   end
+
 end
