@@ -1,6 +1,6 @@
 require 'stripe_mock'
 
-RSpec.describe 'USer can buy subscritption' do
+RSpec.describe 'User can buy subscritption' do
   let(:stripe_helper) { StripeMock.create_test_helper }
     before(:each) { StripeMock.start }
     after(:each) { StripeMock.stop }
@@ -24,8 +24,12 @@ RSpec.describe 'USer can buy subscritption' do
       successful_token
     end
 
-    it 'Successfully' do
+    it 'successfully' do
       expect(response).to have_http_status 200
+    end
+
+    it 'recieves success message' do
+      expect(response_json["message"]).to eq 'Transaction cleared'
     end
 
     it 'has their role updated to subscriber' do
@@ -38,7 +42,7 @@ RSpec.describe 'USer can buy subscritption' do
       invalid_token
     end
 
-    it 'unsuccessfully' do
+    it 'recieves error message' do
       expect(response_json["error"]).to eq 'Transaction rejected, token invalid'
     end
 

@@ -11,7 +11,7 @@ class Api::V1::SubscriptionsController < ApplicationController
     charge = Stripe::Charge.create(
       customer: customer.id,
       currency: 'sek',
-      amount: 999
+      amount: 999,
       description: '6 month Subscription'
     )
     
