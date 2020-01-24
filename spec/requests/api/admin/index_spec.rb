@@ -12,7 +12,7 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
 
   describe 'Successfully lists unpublished articles' do
     before do
-      get '/api/admin/articles',
+      get '/api/v1/admin/articles',
       headers:publisher_headers
     end
     
@@ -32,7 +32,7 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
       let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
       
       before do
-        get '/api/admin/articles',
+        get '/api/v1/admin/articles',
         headers: journalist_headers
       end
 
@@ -48,7 +48,7 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
     describe 'not logged in' do
       let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
       before do
-        get "/api/admin/articles",
+        get "/api/v1/admin/articles",
         headers: non_authorized_headers
       end
       

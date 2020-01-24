@@ -8,7 +8,7 @@ RSpec.describe 'GET/api/admin/users', type: :request do
 
   describe 'Succesfully show profile page' do
     before do
-      get "/api/admin/users/#{user.id}", headers: user_headers
+      get "/api/v1/admin/users/#{user.id}", headers: user_headers
     end
 
     it 'returns a 200 response status' do
@@ -22,7 +22,7 @@ RSpec.describe 'GET/api/admin/users', type: :request do
 
   describe 'Cant see profile page unless authorized' do
     before do
-      get "/api/admin/users/#{user.id}", headers: non_authorized_headers
+      get "/api/v1/admin/users/#{user.id}", headers: non_authorized_headers
     end
 
     it 'returns a 401 response status' do

@@ -1,11 +1,11 @@
-RSpec.describe 'POST /api/admin/articles', type: :request do
+RSpec.describe 'POST /api/v1/admin/articles', type: :request do
   let(:journalist)  { create(:journalist)}
   let(:journalist_credentials) { journalist.create_new_auth_token }
   let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
 
   describe 'Successfully with valid params and user' do
     before do
-      post "/api/admin/articles",
+      post "/api/v1/admin/articles",
       params: {
         article: {
           title: "Article 1",
@@ -23,7 +23,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
   describe 'unsuccessfully with' do
     describe 'no title and content' do
       before do
-        post "/api/admin/articles",
+        post "/api/v1/admin/articles",
         params: {
           article: {
             title: nil,
@@ -45,7 +45,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
     describe 'non logged in user' do
       let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
       before do
-        post "/api/admin/articles",
+        post "/api/v1/admin/articles",
         params: {
           article: {
             title: 'Title',
@@ -70,7 +70,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       let!(:regular_user_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(regular_user_credentials) }
     
       before do
-        post "/api/admin/articles",
+        post "/api/v1/admin/articles",
         params: {
           article: {
             title: "Title",
