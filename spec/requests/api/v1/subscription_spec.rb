@@ -28,14 +28,10 @@ RSpec.describe 'USer can buy subscritption' do
       expect(response).to have_http_status 200
     end
 
-    it 'has payment approved' do
-      expect(response_json["paid"]).to eq true
-    end
-
     it 'has their role updated to subscriber' do
+      binding.pry
       expect(user.role).to eq 'subscriber'
     end
-
   end
 
   describe "User pays for subscription with invalid token" do
@@ -46,6 +42,9 @@ RSpec.describe 'USer can buy subscritption' do
     it 'unsuccessfully' do
       expect(response_json["error"]).to eq 'Transaction rejected, token invalid'
     end
-  end
 
+    it 'has their role remain at user status' do
+      expect(user.role).to eq 'user'
+    end
+  end
 end 

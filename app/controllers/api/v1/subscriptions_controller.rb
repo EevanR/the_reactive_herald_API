@@ -13,11 +13,11 @@ class Api::V1::SubscriptionsController < ApplicationController
       currency: 'sek',
       amount: 500
     )
-    render json: charge
     
     if (charge.paid)
       current_user.role = 'subscriber'
       current_user.save
+      render json: { message: "Transaction cleared"}
     end
   end
   
