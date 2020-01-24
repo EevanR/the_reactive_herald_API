@@ -29,7 +29,6 @@ RSpec.describe 'USer can buy subscritption' do
     end
 
     it 'has their role updated to subscriber' do
-      binding.pry
       expect(user.role).to eq 'subscriber'
     end
   end
