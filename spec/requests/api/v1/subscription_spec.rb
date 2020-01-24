@@ -8,46 +8,76 @@ RSpec.describe 'User can buy subscritption' do
   let(:user_credentials) { user.create_new_auth_token }
   let(:headers) { { HTTP_ACCEPT: 'application/json' }.merge!(user_credentials) }
 
-  let(:successful_token) { post '/api/v1/subscriptions', 
-    params: {
-    stripeToken: stripe_helper.generate_card_token    
-    }, headers: headers
-  user.reload }
+  describe 'with valid stripe token' do
+    describe "successfully" do
+      before do
+        post '/api/v1/subscriptions',
+        params: {
+          stripeToken: stripe_helper.generate_card_token    
+        },
+        headers: headers
+        user.reload
+      end
 
-  let(:invalid_token) { post '/api/v1/subscriptions', 
-    params: {
-    stripeToken: 123456789
-    }, headers: headers}
+      it 'with valid stripe token recieve successful response' do
+        expect(response).to have_http_status 200
+      end
 
-  describe "User pays for subscription" do
-    before do
-      successful_token
-    end
+      it 'recieves success message' do
+        expect(response_json["message"]).to eq 'Transaction cleared'
+      end
 
-    it 'successfully' do
-      expect(response).to have_http_status 200
-    end
-
-    it 'recieves success message' do
-      expect(response_json["message"]).to eq 'Transaction cleared'
-    end
-
-    it 'has their role updated to subscriber' do
-      expect(user.role).to eq 'subscriber'
+      it 'has their role updated to subscriber' do
+        expect(user.role).to eq 'subscriber'
+      end
     end
   end
 
-  describe "User pays for subscription with invalid token" do
-    before do
-      invalid_token
+  describe "unsuccessfully" do
+    describe 'with invalid stripe token' do
+      before do
+        post '/api/v1/subscriptions',
+        params: {
+          stripeToken: 123456789    
+        },
+        headers: headers
+      end
+
+      it "recieves message 'Transaction rejected, token invalid'" do
+        expect(response_json["message"]).to eq 'Transaction rejected, token invalid'
+      end
+
+      it 'has their role remain at user status' do
+        expect(user.role).to eq 'user'
+      end
     end
 
-    it 'recieves error message' do
-      expect(response_json["error"]).to eq 'Transaction rejected, token invalid'
+    describe 'with no stripe token' do
+      before do
+        post '/api/v1/subscriptions',
+        headers: headers
+      end
+
+      it "recieves 'No Stripe token detected'" do
+        expect(response_json["message"]).to eq 'No Stripe token detected'
+      end
     end
 
-    it 'has their role remain at user status' do
-      expect(user.role).to eq 'user'
+    describe 'when user is not signed in' do
+      before do
+        post '/api/v1/subscriptions',
+          params: {
+            stripeToken: stripe_helper.generate_card_token    
+          }
+      end
+
+      it 'returns unsuccessful response' do
+        expect(response).to have_http_status 401
+      end
+
+      it 'returns message to sign in or register first' do
+        expect(response_json["errors"][0]).to eq 'You need to sign in or sign up before continuing.'
+      end
     end
   end
 end 
