@@ -3,10 +3,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, defaults: { format: :json } do
       resources :articles, only: [:show, :index]
-    end
-    namespace :admin, defaults: { format: :json } do
-      resources :articles, only: [:create, :update, :index]
-      resources :users, only: [:show]
+      resources :subscriptions, only: [:create]
+      namespace :admin, defaults: { format: :json } do
+        resources :articles, only: [:create, :update, :index]
+        resources :users, only: [:show]
+      end
     end
   end
 end

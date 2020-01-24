@@ -1,4 +1,4 @@
-class Api::Admin::ArticlesController < ApplicationController
+class Api::V1::Admin::ArticlesController < ApplicationController
   before_action :authenticate_user!
 
   def create

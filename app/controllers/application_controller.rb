@@ -21,7 +21,7 @@ class ApplicationController < ActionController::API
       next_page: resource.next_page,
       prev_page: resource.previous_page,
       total_pages: resource.total_pages,
-      total_count: resource.total_entries
+      total_count: resource.total_entries,
     }
   end
 

@@ -6,7 +6,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
 
   describe 'Successfully publishes article' do
     before do
-      patch "/api/admin/articles/#{article.id}",
+      patch "/api/v1/admin/articles/#{article.id}",
       params: {
         article: {
           published: true
@@ -24,7 +24,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
     describe 'non logged in user' do
       let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
       before do
-        patch "/api/admin/articles/1",
+        patch "/api/v1/admin/articles/1",
         params: {
           article: {
             published: true
@@ -48,7 +48,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
     
       before do
-        patch "/api/admin/articles/1",
+        patch "/api/v1/admin/articles/1",
         params: {
           article: {
             published: true
