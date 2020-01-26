@@ -3,4 +3,6 @@ class Article < ApplicationRecord
   
   belongs_to :journalist, class_name: 'User'
   belongs_to :publisher, class_name: 'User', optional: true
+
+  has_one_attached :image
 end
