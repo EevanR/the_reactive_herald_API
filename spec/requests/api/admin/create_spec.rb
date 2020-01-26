@@ -3,13 +3,23 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
   let(:journalist_credentials) { journalist.create_new_auth_token }
   let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
 
+  let(:image) do
+    {
+      type: 'application/image',
+      encoder: 'name=article_picture.jpg;base64',
+      data: 'iVBORw0KGgoAAAANSUhEUgAABjAAAAOmCAYAAABFYNwHAAAgAElEQVR4XuzdB3gU1cLG8Te9EEgISQi9I71KFbBXbFixN6zfvSiIjSuKInoVFOyIDcWuiKiIol4Q6SBVOtI7IYSWBkm',
+      extension: 'jpg'
+    }
+  end
+
   describe 'Successfully with valid params and user' do
     before do
       post "/api/v1/admin/articles",
       params: {
         article: {
           title: "Article 1",
-          body: "Some content"
+          body: "Some content",
+          image: image
         }
       },
       headers: journalist_headers
