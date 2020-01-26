@@ -23,7 +23,7 @@ module TheReactiveHeraldApi
         origins '*'
         resource '*', 
           headers: :any, 
-          methods: %i[get post put delete],
+          methods: %i[get post put delete patch],
           expose: %w(access-token expiry token-type uid client),
           max_age: 0
       end

@@ -14,8 +14,9 @@ class Api::V1::Admin::ArticlesController < ApplicationController
 
   def update
     authorize(current_user)
-
-    Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
+    Article.update(params[:id], published: params[:published], publisher_id: current_user.id)
+    article = Article.find(params[:id])
+    render json: article
   end
 
   def index
