@@ -2,8 +2,8 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    authorize(article)
     article = current_user.articles.create(article_params.except(:image))
+    authorize(article)
     attach_image(article)
 
     if article.persisted? && attach_image(article)
