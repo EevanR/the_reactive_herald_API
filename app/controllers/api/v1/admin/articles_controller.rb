@@ -13,15 +13,17 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   end
 
   def update
-    authorize(current_user)
-    
-    if params[:article][:published] == "true"
-      Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
+    article = Article.find(params[:id])
+
+    authorize(article)
+    if article.update(article_params.merge(publisher: current_user))
       render head: :ok
-    else 
-      Article.update(params[:id], published: params[:article][:published], publisher_id: nil)
-      render head: :ok
+    else
+      render json: { error: article.errors.full_messages }, status: 422
     end
+    
+
+
   end
 
   def index
@@ -34,6 +36,6 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :body)
+    params.require(:article).permit(:title, :body, :published, :publisher_id)
   end
 end
