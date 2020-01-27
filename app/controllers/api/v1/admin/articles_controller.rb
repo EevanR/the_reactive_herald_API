@@ -16,6 +16,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
     authorize(current_user)
 
     Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
+    render head: :ok
   end
 
   def index
