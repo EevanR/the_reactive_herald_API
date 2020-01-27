@@ -8,15 +8,13 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
     before do
       patch "/api/v1/admin/articles/#{article.id}",
       params: {
-        article: {
-          published: true
-        }
+          "[article][published]": true
       },
       headers: publisher_headers
     end
     
     it 'returns a 200 response status' do
-      expect(response).to have_http_status 204
+      expect(response).to have_http_status 200
     end
   end
 
@@ -26,9 +24,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       before do
         patch "/api/v1/admin/articles/1",
         params: {
-          article: {
-            published: true
-          }
+            "[article][published]": true
         },
         headers: non_authorized_headers
       end
@@ -50,9 +46,7 @@ RSpec.describe 'POST /api/admin/articles', type: :request do
       before do
         patch "/api/v1/admin/articles/1",
         params: {
-          article: {
-            published: true
-          }
+            "[article][published]": true
         },
         headers: journalist_headers
       end
