@@ -22,4 +22,4 @@ module DecodeService
       uri
     end
 	end
-end 
+end

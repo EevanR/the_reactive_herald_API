@@ -12,7 +12,6 @@ class Api::V1::Admin::ArticlesController < ApplicationController
       article.destroy
       render json: { error: "Please attach an image." }, status: 422
     else
-      article.destroy
       render json: { error: article.errors.full_messages }, status: 422
     end
   end
@@ -38,8 +37,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   private
 
   def article_params
-<<<<<<< HEAD
-    params.require(:article).permit(:title, :body, :image)
+    params.require(:article).permit(:title, :body, :published, :publisher_id, :image)
   end
 
   def attach_image(article)
@@ -47,8 +45,5 @@ class Api::V1::Admin::ArticlesController < ApplicationController
     if params_image && params_image.present?
       DecodeService.attach_image(params_image, article.image)
     end
-=======
-    params.require(:article).permit(:title, :body, :published, :publisher_id)
->>>>>>> dffcac672a554297096dba7c3644a44ee708decb
   end
 end
