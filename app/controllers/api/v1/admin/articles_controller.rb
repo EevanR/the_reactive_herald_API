@@ -14,9 +14,14 @@ class Api::V1::Admin::ArticlesController < ApplicationController
 
   def update
     authorize(current_user)
-
-    Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
-    render head: :ok
+    
+    if params[:article][:published] == "true"
+      Article.update(params[:id], published: params[:article][:published], publisher_id: current_user.id)
+      render head: :ok
+    else 
+      Article.update(params[:id], published: params[:article][:published], publisher_id: nil)
+      render head: :ok
+    end
   end
 
   def index
