@@ -3,13 +3,23 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
   let(:journalist_credentials) { journalist.create_new_auth_token }
   let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
 
+  let(:image) do
+    {
+      type: 'application/image',
+      encoder: 'name=article_picture.jpg;base64',
+      data: 'iVBORw0KGgoAAAANSUhEUgAABjAAAAOmCAYAAABFYNwHAAAgAElEQVR4XuzdB3gU1cLG8Te9EEgISQi9I71KFbBXbFixN6zfvSiIjSuKInoVFOyIDcWuiKiIol4Q6SBVOtI7IYSWBkm',
+      extension: 'jpg'
+    }
+  end
+
   describe 'Successfully with valid params and user' do
     before do
       post "/api/v1/admin/articles",
       params: {
         article: {
           title: "Article 1",
-          body: "Some content"
+          body: "Some content",
+          image: image
         }
       },
       headers: journalist_headers
@@ -17,6 +27,11 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
     
     it 'returns a 200 response status' do
       expect(response).to have_http_status 200
+    end
+
+    it 'shows that an image has been attached successfully' do
+      article = Article.find_by(title: "Article 1")
+      expect(article.image.attached?).to eq true
     end
   end
 
@@ -39,6 +54,31 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
 
       it 'returns error message' do
         expect(response_json["error"]).to eq ["Title can't be blank", "Body can't be blank"]
+      end
+    end
+
+    describe 'has title and content but no image' do
+      before do
+        post "/api/v1/admin/articles",
+        params: {
+          article: {
+            title: "Article 2",
+            body: "Some Content"
+          }
+        },
+        headers: journalist_headers
+      end
+  
+      it 'returns a 422 response status' do
+        expect(response).to have_http_status 422
+      end
+
+      it 'returns no article' do
+        expect(Article.find_by(title: "Article 2")).to eq nil
+      end
+
+      it 'returns error message' do
+        expect(response_json["error"]).to eq "Please attach an image."
       end
     end
 

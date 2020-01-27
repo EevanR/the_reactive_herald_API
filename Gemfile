@@ -13,6 +13,7 @@ gem 'will_paginate', '~> 3.1.0'
 gem 'devise_token_auth'
 gem "pundit"
 gem 'stripe-rails'
+gem 'aws-sdk-s3'
 
 group :development, :test do
   gem 'rspec-rails'
