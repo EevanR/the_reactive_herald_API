@@ -29,7 +29,7 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
       expect(response).to have_http_status 200
     end
 
-    it 'shows that an image has been attacehd successfully' do
+    it 'shows that an image has been attached successfully' do
       article = Article.find_by(title: "Article 1")
       expect(article.image.attached?).to eq true
     end

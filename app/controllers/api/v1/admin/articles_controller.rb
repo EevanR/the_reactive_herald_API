@@ -3,8 +3,9 @@ class Api::V1::Admin::ArticlesController < ApplicationController
 
   def create
     authorize(current_user)
-    article = current_user.articles.create(article_params)
-    
+    article = current_user.articles.create(article_params.except(:image))
+    attach_image(article)
+
     if article.persisted? && attach_image(article)
       render head: :ok
     elsif article.persisted? && !attach_image(article)
@@ -32,7 +33,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :body)
+    params.require(:article).permit(:title, :body, :image)
   end
 
   def attach_image(article)
