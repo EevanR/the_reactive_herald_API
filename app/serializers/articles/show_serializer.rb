@@ -5,7 +5,7 @@ class Articles::ShowSerializer < ActiveModel::Serializer
 
   def body
     if current_user != nil 
-      if current_user[:role] == 'subscriber'
+      if current_user.subscriber? || current_user.journalist? || current_user.publisher?
       object.body
       else
         truncate(object.body, length: 350)
@@ -16,3 +16,4 @@ class Articles::ShowSerializer < ActiveModel::Serializer
   end
 
 end
+
