@@ -4,10 +4,14 @@ class Articles::ShowSerializer < ActiveModel::Serializer
   attributes :id, :title, :body
 
   def body
-    if current_user[:role] == 'subscriber'
+    if current_user != nil 
+      if current_user[:role] == 'subscriber'
       object.body
+      else
+        truncate(object.body, length: 350)
+      end
     else
-      truncate(object.body, length: 225)
+      truncate(object.body, length: 350)
     end
   end
 

@@ -6,6 +6,9 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
   let!(:subscriber) { create(:subscriber) }
   let(:subscriber_credentials) { subscriber.create_new_auth_token }
   let!(:subscriber_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(subscriber_credentials) }
+  let!(:user) { create(:user) }
+  let(:user_credentials) { user.create_new_auth_token }
+  let!(:user_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(user_credentials) }
 
   describe 'Successfully' do
     before do
@@ -32,17 +35,24 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
   end
   
   describe 'Successfully' do
-    before do
-      get "/api/v1/articles/#{article.id}", 
-      params: {
-        "article[published]": true
-      },
-      headers: subscriber_headers
-  end
 
-    it 'returns article title' do
-      expect(response_json["article"]["body"].length).to eq 75
+    it 'returns shortened article for visitor' do
+      get "/api/v1/articles/#{article.id}"
+      expect(response_json["article"]["body"].length).to eq 350
+    end
+
+    it 'returns shortened article for user' do
+      get "/api/v1/articles/#{article.id}", 
+      headers: user_headers
+      expect(response_json["article"]["body"].length).to eq 350
+    end
+
+    it 'returns full length article for subscriber' do
+      get "/api/v1/articles/#{article.id}", 
+      headers: subscriber_headers
+      expect(response_json["article"]["body"].length).to eq article.body.length
     end
   end
-  
+
+
 end
