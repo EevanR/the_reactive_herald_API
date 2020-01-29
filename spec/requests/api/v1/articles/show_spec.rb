@@ -46,5 +46,17 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
     end
   end
 
+  describe 'Successfully' do
+    before do
+      get "/api/v1/articles/#{article.id}", params: { locale: :sv }, headers: headers
+    end
 
+    it 'returns a 200 response status' do
+      expect(response).to have_http_status 200
+    end
+
+    it 'returns article title in swedish' do
+      expect(response_json["article"]["title"]).to eq "Brytande nyheter"
+    end
+  end
 end

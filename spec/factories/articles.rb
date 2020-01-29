@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :article do
-    title { "Breaking News" }
-    body { "Some long breaking content" * 20 }
+    title_en { "Breaking News" }
+    body_en { "Some long breaking content" * 20 }
+    title_sv { "Brytande nyheter" }
+    body_sv { "Långt brytande innehåll. " *20}
     association :journalist
     
     after(:create) do |article|
