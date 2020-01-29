@@ -39,12 +39,6 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
       expect(response_json["article"]["body"].length).to eq 350
     end
 
-    it 'returns shortened article for user' do
-      get "/api/v1/articles/#{article.id}", 
-      headers: user_headers
-      expect(response_json["article"]["body"].length).to eq 350
-    end
-
     it 'returns full length article for subscriber' do
       get "/api/v1/articles/#{article.id}", 
       headers: subscriber_headers
