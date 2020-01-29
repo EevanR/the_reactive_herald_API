@@ -37,7 +37,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title_en, :title_sv, :body_en, :body_sv, :published, :publisher_id, :image)
+    params.require(:article).permit(:title_en, :title_sv, :body_en, :body_sv, :published, :publisher_id, :image, :category)
   end
 
   def attach_image(article)

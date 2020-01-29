@@ -19,6 +19,7 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
         article: {
           title: "Article 1",
           body: "Some content",
+          category: "tech",
           image: image
         }
       },

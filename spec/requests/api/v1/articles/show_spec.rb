@@ -33,7 +33,6 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
   end
   
   describe 'Successfully' do
-
     it 'returns shortened article for visitor' do
       get "/api/v1/articles/#{article.id}"
       expect(response_json["article"]["body"].length).to eq 350
