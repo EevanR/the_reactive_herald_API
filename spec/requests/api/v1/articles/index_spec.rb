@@ -5,6 +5,9 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     10.times do
       create(:article, journalist_id: journalist.id)
     end
+    2.times do
+      create(:article, journalist_id: journalist.id, location: 'Stockholm')
+    end
   end
 
   describe 'Get first page' do
@@ -51,7 +54,17 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     end
 
     it 'returns total number of entries' do
-      expect(response_json["meta"]["total_count"]).to eq 10
+      expect(response_json["meta"]["total_count"]).to eq 12
+    end
+  end
+
+  describe 'Gets index page by location' do
+    before do
+      get '/api/v1/articles', params: { location: "Stockholm" }
+    end
+
+    it 'return all articles with location "Stockholm"' do
+      expect(response_json['meta']['total_count']).to eq 2
     end
   end
 
