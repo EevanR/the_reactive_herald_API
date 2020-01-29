@@ -1,10 +1,19 @@
 class Articles::ShowSerializer < ActiveModel::Serializer
+  include ActionView::Helpers::TextHelper
   include Rails.application.routes.url_helpers
 
   attributes :id, :title, :body, :image
 
+  def body
+    if !current_user.nil? && !current_user.role.nil?
+      object.body
+    else
+      truncate(object.body, length: 350)
+    end
+  end
+
   def image
-    if object.image.attachment == nil
+    if object.image.attachment.nil?
       object.image = nil
     else
       if Rails.env.test?
