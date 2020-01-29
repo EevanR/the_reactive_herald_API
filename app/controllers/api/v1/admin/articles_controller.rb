@@ -19,8 +19,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   def update
     article = Article.find(params[:id])
     authorize(article)
-    
-    if article.update(article_params.merge(publisher: current_user))
+    if article.update(article_params.merge(publisher: current_user)) && article.unpublish()
       render head: :ok
     else
       render json: { error: article.errors.full_messages }, status: 422
