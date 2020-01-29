@@ -2,7 +2,7 @@ class Articles::ShowSerializer < ActiveModel::Serializer
   include ActionView::Helpers::TextHelper
   include Rails.application.routes.url_helpers
 
-  attributes :id, :title, :body, :image
+  attributes :id, :title, :body, :image, :location
 
   def body
     if !current_user.nil? && !current_user.role.nil?

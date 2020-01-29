@@ -6,8 +6,8 @@ RSpec.describe Articles::ShowSerializer, type: :serializer do
     .new(article, scope: create(:user), scope_name: :current_user)}
   subject { JSON.parse(serialization.to_json) }
 
-  it 'contains id, title, body and image' do
-    expected_keys = ['id', 'title', 'body', 'image']
+  it 'contains id, title, body, location and image' do
+    expected_keys = ['id', 'title', 'body', 'image', 'location']
     expect(subject.keys).to match expected_keys
   end
 end
