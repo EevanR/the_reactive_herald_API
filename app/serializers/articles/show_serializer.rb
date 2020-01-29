@@ -1,3 +1,15 @@
 class Articles::ShowSerializer < ActiveModel::Serializer
-  attributes :id, :title, :body, :category
+  include ActionView::Helpers::TextHelper
+
+  attributes :id, :title, :body
+
+  def body
+    if current_user != nil && current_user.role != nil
+      object.body
+    else
+      truncate(object.body, length: 350)
+    end
+  end
+
 end
+
