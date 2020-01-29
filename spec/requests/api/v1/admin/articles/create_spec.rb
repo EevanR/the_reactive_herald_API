@@ -17,8 +17,8 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
       post "/api/v1/admin/articles",
       params: {
         article: {
-          title: "Article 1",
-          body: "Some content",
+          title_en: "Article 1",
+          body_en: "Some content",
           category: "tech",
           image: image
         }
@@ -63,8 +63,8 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
         post "/api/v1/admin/articles",
         params: {
           article: {
-            title: "Article 2",
-            body: "Some Content"
+            title_en: "Article 2",
+            body_en: "Some Content"
           }
         },
         headers: journalist_headers

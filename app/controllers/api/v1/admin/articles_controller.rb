@@ -2,7 +2,6 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    binding.pry
     article = current_user.articles.create(article_params.except(:image))
     authorize(article)
     attach_image(article)
