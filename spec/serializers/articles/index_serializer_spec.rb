@@ -5,8 +5,8 @@ RSpec.describe Articles::IndexSerializer, type: :serializer do
   let(:serialization) { Articles::IndexSerializer.new(article) }
   subject { JSON.parse(serialization.to_json) }
 
-  it 'contains id, title, body, image and location' do
-    expected_keys = ['id', 'title', 'body', 'image', 'location']
+  it 'contains id, title, body, category, image and location' do
+    expected_keys = ['id', 'title', 'body', 'image', 'category', 'location']
     expect(subject.keys).to match expected_keys
   end
 

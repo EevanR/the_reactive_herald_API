@@ -2,7 +2,7 @@ class Articles::IndexSerializer < ActiveModel::Serializer
   include ActionView::Helpers::TextHelper
   include Rails.application.routes.url_helpers
 
-  attributes :id, :title, :body, :image, :location
+  attributes :id, :title, :body, :image, :location, :category
 
   def body
     if instance_options[:role] == 'publisher'

@@ -9,6 +9,12 @@ class Api::V1::ArticlesController < ApplicationController
       articles = Article.paginate(page: params[:page], per_page: 4)
       render json: articles, each_serializer: Articles::IndexSerializer, meta: meta_attributes(articles)
     end
+    if params[:category]
+      articles = Article.where(category: params[:category]).paginate(page: params[:category], per_page: 4)
+    else
+      articles = Article.paginate(page: params[:page], per_page: 4)
+    end
+    render json: articles, each_serializer: Articles::IndexSerializer, meta: meta_attributes(articles)
   end
 
   def show

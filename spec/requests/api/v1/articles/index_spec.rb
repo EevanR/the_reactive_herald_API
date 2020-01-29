@@ -3,7 +3,7 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
   let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' } }
   let!(:article) do
     10.times do
-      create(:article, journalist_id: journalist.id)
+      create(:article, journalist_id: journalist.id, category: 2)
     end
     2.times do
       create(:article, journalist_id: journalist.id, location: 'Stockholm')
@@ -65,6 +65,16 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
 
     it 'return all articles with location "Stockholm"' do
       expect(response_json['meta']['total_count']).to eq 2
+    end
+  end
+
+  describe 'Gets categorized index page' do
+    before do
+      get '/api/v1/articles', params: { category: 2 }
+    end
+
+    it 'return articles of the third category' do
+      expect(response_json['articles'][3]['category']).to eq "tech"
     end
   end
 
