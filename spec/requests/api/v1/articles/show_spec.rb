@@ -46,5 +46,4 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
     end
   end
 
-
 end
