@@ -14,6 +14,8 @@ gem 'devise_token_auth'
 gem "pundit"
 gem 'stripe-rails'
 gem 'aws-sdk-s3'
+gem 'rails-i18n'
+gem 'globalize'
 
 group :development, :test do
   gem 'rspec-rails'

@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::API
   include Pundit
   include DeviseTokenAuth::Concerns::SetUserByToken
+  before_action :set_locale
 
   rescue_from Pundit::NotAuthorizedError, with: :not_authorized
 
@@ -9,7 +10,6 @@ class ApplicationController < ActionController::API
   end 
 
   protected
-
 
   def article_not_found
     render json: { error: "Article not found"}, status: 404
@@ -23,6 +23,10 @@ class ApplicationController < ActionController::API
       total_pages: resource.total_pages,
       total_count: resource.total_entries,
     }
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
   end
 
 end
