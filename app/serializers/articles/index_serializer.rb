@@ -1,7 +1,7 @@
 class Articles::IndexSerializer < ActiveModel::Serializer
   include ActionView::Helpers::TextHelper
 
-  attributes :id, :title, :body
+  attributes :id, :title, :body, :category
 
   def body
     if instance_options[:role] == 'publisher'

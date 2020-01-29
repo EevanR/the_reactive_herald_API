@@ -1,3 +1,3 @@
 class Articles::ShowSerializer < ActiveModel::Serializer
-  attributes :id, :title, :body
+  attributes :id, :title, :body, :category
 end
