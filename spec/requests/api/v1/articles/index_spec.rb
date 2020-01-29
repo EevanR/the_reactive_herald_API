@@ -8,6 +8,13 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     2.times do
       create(:article, journalist_id: journalist.id, location: 'Stockholm')
     end
+    2.times do
+      create(:article, 
+        journalist_id: journalist.id, 
+        location: 'Stockholm',
+        category: 2
+      )
+    end
   end
 
   describe 'Get first page' do
@@ -54,17 +61,7 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     end
 
     it 'returns total number of entries' do
-      expect(response_json["meta"]["total_count"]).to eq 12
-    end
-  end
-
-  describe 'Gets index page by location' do
-    before do
-      get '/api/v1/articles', params: { location: "Stockholm" }
-    end
-
-    it 'return all articles with location "Stockholm"' do
-      expect(response_json['meta']['total_count']).to eq 2
+      expect(response_json["meta"]["total_count"]).to eq 14
     end
   end
 
@@ -75,6 +72,30 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
 
     it 'return articles of the third category' do
       expect(response_json['articles'][3]['category']).to eq "tech"
+    end
+  end
+
+  describe 'Gets index page by location' do
+    before do
+      get '/api/v1/articles', params: { location: "Stockholm" }
+    end
+
+    it 'return all articles with location "Stockholm"' do
+      expect(response_json['meta']['total_count']).to eq 4
+    end
+  end
+
+  describe 'Gets index page by location and category' do
+    before do
+      get '/api/v1/articles', 
+        params: { 
+          location: "Stockholm",
+          category: 2
+        }
+    end
+
+    it 'return articles with location "Stockholm" and category "tech"' do
+      expect(response_json['meta']['total_count']).to eq 2
     end
   end
 
