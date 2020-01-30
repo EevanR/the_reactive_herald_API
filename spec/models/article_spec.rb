@@ -1,7 +1,5 @@
 RSpec.describe Article, type: :model do
   describe 'Database table' do
-    it { is_expected.to have_db_column :title }
-    it { is_expected.to have_db_column :body }
     it { is_expected.to have_db_column :journalist_id }
     it { is_expected.to have_db_column :published }
     it { is_expected.to have_db_column :publisher_id }

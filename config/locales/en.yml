@@ -30,4 +30,12 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  stripe:
+    description: "6 month subscription"
+    pay_success: "Transaction cleared"
+    pay_failure: "Transaction rejected, token invalid"
+    missing_token: "No Stripe token detected"
+  errors:
+    not_authorized: "Not authorized!"
+    article_not_found: "Article not found"
+    img_missing: "Please attach an image"

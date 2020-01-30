@@ -9,31 +9,57 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
   let!(:user_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(user_credentials) }
 
   describe 'Successfully' do
-    before do
-      get "/api/v1/articles/#{article.id}", headers: headers
+    describe 'in english' do
+      before do
+        get "/api/v1/articles/#{article.id}", headers: headers
+      end
+  
+      it 'returns a 200 response status' do
+        expect(response).to have_http_status 200
+      end
+  
+      it 'returns article title' do
+        expect(response_json["article"]["title"]).to eq "Breaking News"
+      end
     end
 
-    it 'returns a 200 response status' do
-      expect(response).to have_http_status 200
-    end
-
-    it 'returns article title' do
-      expect(response_json["article"]["title"]).to eq "Breaking News"
+    describe 'in swedish' do
+      before do
+        get "/api/v1/articles/#{article.id}", params: { locale: :sv }, headers: headers
+      end
+  
+      it 'returns article title in swedish' do
+        expect(response_json["article"]["title"]).to eq "Brytande nyheter"
+      end
     end
   end
 
   describe 'With invalid :id' do
-    before do
-      get "/api/v1/articles/10000", headers: headers
+    describe 'in english' do
+      before do
+        get "/api/v1/articles/10000", headers: headers
+      end
+  
+      it 'returns error if article does not exist' do
+        expect(response_json["error"]).to eq "Article not found"
+      end
     end
 
-    it 'returns error if article does not exist' do
-      expect(response_json["error"]).to eq "Article not found"
+    describe 'in swedish' do
+      before do
+        get "/api/v1/articles/10000", 
+          params: { locale: :sv },
+          headers: headers
+      end
+  
+      it 'returns error in swedish if article does not exist' do
+        expect(response_json["error"]).to eq "Artikeln hittades inte"
+      end
     end
+
   end
   
   describe 'Successfully' do
-
     it 'returns shortened article for visitor' do
       get "/api/v1/articles/#{article.id}"
       expect(response_json["article"]["body"].length).to eq 350
@@ -45,5 +71,4 @@ RSpec.describe 'GET /api/v1/articles/:id', type: :request do
       expect(response_json["article"]["body"].length).to eq article.body.length
     end
   end
-
 end

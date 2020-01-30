@@ -14,23 +14,23 @@ class Api::V1::SubscriptionsController < ApplicationController
         customer: customer.id,
         currency: 'sek',
         amount: 999,
-        description: '6 month Subscription'
+        description: I18n.t('stripe.description')
       )
       
       if (charge.paid)
         current_user.role = 'subscriber'
         current_user.save
-        render json: { message: "Transaction cleared"}
+        render json: { message: I18n.t('stripe.pay_success')}
       end
     else
-      render json: { message: "No Stripe token detected"}
+      render json: { message: I18n.t('stripe.missing_token')}
     end
   end
   
   private
 
   def invalid_token_id
-    render json: { message: "Transaction rejected, token invalid"}
+    render json: { message: I18n.t('stripe.pay_failure')}
   end 
 
 end

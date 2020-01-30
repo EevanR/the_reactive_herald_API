@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_29_101445) do
+ActiveRecord::Schema.define(version: 2020_01_29_103134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,9 +36,18 @@ ActiveRecord::Schema.define(version: 2020_01_29_101445) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "articles", force: :cascade do |t|
+  create_table "article_translations", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "title"
     t.text "body"
+    t.index ["article_id"], name: "index_article_translations_on_article_id"
+    t.index ["locale"], name: "index_article_translations_on_locale"
+  end
+
+  create_table "articles", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "journalist_id"

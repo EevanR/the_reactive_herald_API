@@ -10,25 +10,44 @@ RSpec.describe 'User can buy subscritption' do
 
   describe 'with valid stripe token' do
     describe "successfully" do
-      before do
-        post '/api/v1/subscriptions',
-        params: {
-          stripeToken: stripe_helper.generate_card_token    
-        },
-        headers: headers
-        user.reload
+      describe 'in english' do
+        before do
+          post '/api/v1/subscriptions',
+          params: {
+            stripeToken: stripe_helper.generate_card_token    
+          },
+          headers: headers
+          user.reload
+        end
+  
+        it 'with valid stripe token recieve successful response' do
+          expect(response).to have_http_status 200
+        end
+  
+        it 'receives success message' do
+          expect(response_json["message"]).to eq 'Transaction cleared'
+        end
+  
+        it 'has their role updated to subscriber' do
+          expect(user.role).to eq 'subscriber'
+        end
       end
 
-      it 'with valid stripe token recieve successful response' do
-        expect(response).to have_http_status 200
-      end
+      describe 'in swedish' do
+        before do
+          post '/api/v1/subscriptions',
+          params: {
+            stripeToken: stripe_helper.generate_card_token,
+            locale: :sv    
+          },
+          headers: headers
+          user.reload
+        end
 
-      it 'recieves success message' do
-        expect(response_json["message"]).to eq 'Transaction cleared'
-      end
+        it 'receives success message in swedish' do
+          expect(response_json["message"]).to eq 'Betalning genomförd'
+        end
 
-      it 'has their role updated to subscriber' do
-        expect(user.role).to eq 'subscriber'
       end
     end
   end

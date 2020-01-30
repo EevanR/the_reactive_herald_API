@@ -17,8 +17,8 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
       post "/api/v1/admin/articles",
       params: {
         article: {
-          title: "Article 1",
-          body: "Some content",
+          title_en: "Article 1",
+          body_en: "Some content",
           category: "tech",
           image: image
         }
@@ -63,8 +63,8 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
         post "/api/v1/admin/articles",
         params: {
           article: {
-            title: "Article 2",
-            body: "Some Content"
+            title_en: "Article 2",
+            body_en: "Some Content"
           }
         },
         headers: journalist_headers
@@ -79,29 +79,49 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
       end
 
       it 'returns error message' do
-        expect(response_json["error"]).to eq "Please attach an image."
+        expect(response_json["error"]).to eq "Please attach an image"
       end
     end
 
     describe 'non logged in user' do
       let!(:non_authorized_headers) { { HTTP_ACCEPT: 'application/json' } }
-      before do
-        post "/api/v1/admin/articles",
-        params: {
-          article: {
-            title: 'Title',
-            body: "Some content"
-          }
-        },
-        headers: non_authorized_headers
-      end
       
-      it 'returns a 401 response status' do
-        expect(response).to have_http_status 401
+      describe 'in english' do
+        before do
+          post "/api/v1/admin/articles",
+          params: {
+            article: {
+              title: 'Title',
+              body: "Some content"
+            }
+          },
+          headers: non_authorized_headers
+        end
+        
+        it 'returns a 401 response status' do
+          expect(response).to have_http_status 401
+        end
+  
+        it 'returns error message' do
+          expect(response_json["errors"][0]).to eq "You need to sign in or sign up before continuing."
+        end
       end
-
-      it 'returns error message' do
-        expect(response_json["errors"][0]).to eq "You need to sign in or sign up before continuing."
+      describe 'in swedish' do
+        before do
+          post "/api/v1/admin/articles",
+          params: {
+            article: {
+              title: 'Title',
+              body: "Some content"
+            },
+            locale: :sv
+          },
+          headers: non_authorized_headers
+        end
+  
+        it 'returns error message in swedish' do
+          expect(response_json["errors"][0]).to eq "Du måste bli medlem eller logga in för att fortsätta."
+        end
       end
     end
 
@@ -109,26 +129,45 @@ RSpec.describe 'POST /api/v1/admin/articles', type: :request do
       let(:regular_user) { create(:user, role: 'user')}
       let(:regular_user_credentials) { regular_user.create_new_auth_token }
       let!(:regular_user_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(regular_user_credentials) }
+      
+      describe 'in english' do
+        before do
+          post "/api/v1/admin/articles",
+          params: {
+            article: {
+              title: "Title",
+              body: "Some content"
+            }
+          },
+          headers: regular_user_headers
+        end
     
-      before do
-        post "/api/v1/admin/articles",
-        params: {
-          article: {
-            title: "Title",
-            body: "Some content"
-          }
-        },
-        headers: regular_user_headers
-      end
+        it 'returns a 404 response status' do
+          expect(response).to have_http_status 404
+        end
   
-      it 'returns a 404 response status' do
-        expect(response).to have_http_status 404
+        it 'returns error message' do
+          expect(response_json["error"]).to eq "Not authorized!"
+        end
       end
 
-      it 'returns error message' do
-        expect(response_json["error"]).to eq "Not authorized!"
+      describe 'in swedish' do
+        before do
+          post "/api/v1/admin/articles",
+          params: {
+            article: {
+              title: "Title",
+              body: "Some content"
+            },
+            locale: :sv
+          },
+          headers: regular_user_headers
+        end
+
+        it 'returns error message in swedish' do
+          expect(response_json["error"]).to eq "Åtkomst nekad"
+        end
       end
     end
-
   end
 end

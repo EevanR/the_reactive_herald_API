@@ -1,0 +1,13 @@
+sv:
+  stripe:
+    description: "6 månaders abonnemang"
+    pay_success: "Betalning genomförd"
+    pay_failure: "Betalningen misslyckades, ogiltig Stripe Token"
+    missing_token: "Stripe Token saknas"
+  errors:
+    not_authorized: "Åtkomst nekad"
+    article_not_found: "Artikeln hittades inte"
+    img_missing: "Vänligen bifoga en bild"
+  devise:
+    failure:
+      unauthenticated: "Du måste bli medlem eller logga in för att fortsätta."

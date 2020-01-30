@@ -10,7 +10,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
       render head: :ok
     elsif article.persisted? && !attach_image(article)
       article.destroy
-      render json: { error: "Please attach an image." }, status: 422
+      render json: { error: I18n.t('errors.img_missing') }, status: 422
     else
       render json: { error: article.errors.full_messages }, status: 422
     end
@@ -36,7 +36,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   private
 
   def article_params
-    params.require(:article).permit(:title, :body, :published, :publisher_id, :image, :category)
+    params.require(:article).permit(:title_en, :title_sv, :body_en, :body_sv, :published, :publisher_id, :image, :category)
   end
 
   def attach_image(article)

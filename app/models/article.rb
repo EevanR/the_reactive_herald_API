@@ -1,5 +1,7 @@
 class Article < ApplicationRecord
   validates_presence_of :title, :body
+  translates :title, :body
+  globalize_accessors locales: [:en, :sv], attributes: [:title, :body]
   
   belongs_to :journalist, class_name: 'User'
   belongs_to :publisher, class_name: 'User', optional: true
