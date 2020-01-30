@@ -6,13 +6,13 @@ class ApplicationController < ActionController::API
   rescue_from Pundit::NotAuthorizedError, with: :not_authorized
 
   def not_authorized 
-    render json: { error: "Not authorized!"}, status: 404
+    render json: { error: I18n.t('errors.not_authorized')}, status: 404
   end 
 
   protected
 
   def article_not_found
-    render json: { error: "Article not found"}, status: 404
+    render json: { error: I18n.t('errors.article_not_found')}, status: 404
   end
 
   def meta_attributes(resource)    
