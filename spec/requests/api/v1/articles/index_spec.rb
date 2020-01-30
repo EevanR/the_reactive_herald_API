@@ -136,6 +136,7 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     end
 
     it 'return 0 articles if location matches but category is empty' do
+      binding.pry
       expect(response_json['meta']['total_count']).to eq 0
     end
 
