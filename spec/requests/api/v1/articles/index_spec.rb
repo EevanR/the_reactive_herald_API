@@ -5,6 +5,16 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     10.times do
       create(:article, journalist_id: journalist.id, category: 2)
     end
+    2.times do
+      create(:article, journalist_id: journalist.id, location: 'Stockholm')
+    end
+    2.times do
+      create(:article, 
+        journalist_id: journalist.id, 
+        location: 'Stockholm',
+        category: 2
+      )
+    end
   end
 
   describe 'Get first page' do
@@ -51,7 +61,7 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
     end
 
     it 'returns total number of entries' do
-      expect(response_json["meta"]["total_count"]).to eq 10
+      expect(response_json["meta"]["total_count"]).to eq 14
     end
   end
 
@@ -62,6 +72,83 @@ RSpec.describe 'GET /api/v1/articles', type: :request do
 
     it 'return articles of the third category' do
       expect(response_json['articles'][3]['category']).to eq "tech"
+    end
+
+    it 'return all articles with category "Tech"' do
+      expect(response_json['meta']['total_count']).to eq 12
+    end
+  end
+
+  describe 'Gets index page by location' do
+    before do
+      get '/api/v1/articles', params: { location: "Stockholm" }
+    end
+
+    it 'return all articles with location "Stockholm"' do
+      expect(response_json['meta']['total_count']).to eq 4
+    end
+    
+  end
+
+  describe 'Gets index page by location and category' do
+    before do
+      get '/api/v1/articles', 
+        params: { 
+          location: "Stockholm",
+          category: 2
+        }
+    end
+
+    it 'return 2 articles with location "Stockholm" and category "tech"' do
+      expect(response_json['meta']['total_count']).to eq 2
+    end
+  end
+
+  describe 'Get index of articles unsuccessfully by category and location' do
+    before do
+      get '/api/v1/articles', 
+        params: { 
+          location: "Gothenburg"
+        }
+    end
+
+    it 'return 0 articles if no location matches"' do
+      expect(response_json['meta']['total_count']).to eq 0
+    end
+
+    before do
+      get '/api/v1/articles', 
+        params: { 
+          category: 3
+        }
+    end
+
+    it 'return 0 articles if no category matches' do
+      expect(response_json['meta']['total_count']).to eq 0
+    end
+
+    before do
+      get '/api/v1/articles', 
+        params: { 
+          location: "Stockholm",
+          category: 3
+        }
+    end
+
+    it 'return 0 articles if location matches but category is empty' do
+      expect(response_json['meta']['total_count']).to eq 0
+    end
+
+    before do
+      get '/api/v1/articles', 
+        params: { 
+          location: "Gothenburg",
+          category: 3
+        }
+    end
+
+    it 'return 0 articles if no location or category matches"' do
+      expect(response_json['meta']['total_count']).to eq 0
     end
   end
 

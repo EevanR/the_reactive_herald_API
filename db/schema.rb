@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2020_01_29_103134) do
     t.integer "journalist_id"
     t.boolean "published", default: false
     t.integer "publisher_id"
+    t.string "location", default: "All"
     t.integer "category", default: 5
   end
 
