@@ -2,16 +2,13 @@ class Api::V1::ArticlesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :article_not_found
 
   def index
-    articlesCat = Article.where(category: params[:category])
-    articlesLoc = Article.where(location: params[:location])
-    articlesLocCat = Article.where(location: params[:location], category: params[:category])
-
+    
     if params[:location] && params[:category]
-      articles = articlesLocCat
+      articles = Article.where(location: params[:location], category: params[:category])
     elsif params[:location]
-      articles = articlesLoc
+      articles = Article.where(location: params[:location])
     elsif params[:category]
-      articles = articlesCat
+      articles = Article.where(category: params[:category])
     else
       articles = Article.all
     end
