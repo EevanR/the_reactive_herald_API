@@ -37,6 +37,12 @@ class Api::V1::Admin::ArticlesController < ApplicationController
     end
   end
 
+  def show
+    article = Article.find(params[:id])
+    authorize(article)
+    render json: article, serializer: Articles::ShowSerializer
+  end
+
   def destroy
     article = Article.find(params[:id])
     authorize(article)

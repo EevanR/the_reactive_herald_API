@@ -20,4 +20,8 @@ class ArticlePolicy < ApplicationPolicy
   def destroy?
     @user.publisher?
   end
+
+  def show?
+    @user.publisher?
+  end
 end
