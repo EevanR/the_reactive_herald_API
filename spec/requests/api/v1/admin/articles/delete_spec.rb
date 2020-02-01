@@ -1,11 +1,11 @@
-RSpec.describe 'GET/api/admin/articles', type: :request do
+RSpec.describe 'DELETE /api/admin/articles', type: :request do
   let(:publisher)  { create(:publisher)}
   let(:publisher_credentials) { publisher.create_new_auth_token }
   let!(:publisher_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(publisher_credentials) }
   let!(:article) { create(:article) }
 
 
-  describe 'Successfully lists unpublished articles' do
+  describe 'Successfully deletes article' do
     before do
       delete "/api/v1/admin/articles/#{article.id}",
       headers: publisher_headers
@@ -16,13 +16,14 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
     end
 
     it 'returns success message' do
-      expect(response_json['message'].count).to eq "Article has been deleted"
+      expect(response_json['message']).to eq "Article has been deleted"
     end
 
-    it 'returns the article writer' do
+    it 'returns no article' do
       get "/api/v1/articles/#{article.id}",
-      binding.pry
-      expect(response_json['errors']).to eq "Article not found"
+      headers: { HTTP_ACCEPT: 'application/json' }
+
+      expect(response_json['error']).to eq 'Article not found'
     end
   end
 

@@ -37,6 +37,18 @@ class Api::V1::Admin::ArticlesController < ApplicationController
     end
   end
 
+  def destroy
+    article = Article.find(params[:id])
+    authorize(article)
+    article.destroy
+
+    if article.destroyed?
+      render json: { message: "Article has been deleted" }, status: 200
+    else
+      render json: { error: article.errors.full_messages }, status: 422
+    end
+  end
+
   private
 
   def article_params
