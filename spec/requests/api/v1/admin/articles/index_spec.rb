@@ -13,7 +13,8 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
   describe 'Successfully lists unpublished articles' do
     before do
       get '/api/v1/admin/articles',
-      headers:publisher_headers
+      params: { published: false },
+      headers: publisher_headers
     end
     
     it 'returns a 200 response status' do
@@ -22,6 +23,26 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
 
     it 'returns 3 articles' do
       expect(response_json['articles'].count).to eq 3
+    end
+
+    it 'returns the article writer' do
+      expect(response_json['articles'].first['journalist']).to include "user"
+    end
+  end
+
+  describe 'Successfully lists published articles' do
+    before do
+      get '/api/v1/admin/articles',
+      params: { published: true },
+      headers: publisher_headers
+    end
+    
+    it 'returns a 200 response status' do
+      expect(response).to have_http_status 200
+    end
+
+    it 'returns 1 article' do
+      expect(response_json['articles'].count).to eq 1
     end
   end
 
@@ -58,6 +79,21 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
 
       it 'returns error message' do
         expect(response_json["errors"][0]).to eq "You need to sign in or sign up before continuing."
+      end
+    end
+
+    describe 'no params' do
+      before do
+        get '/api/v1/admin/articles',
+        headers: publisher_headers
+      end
+      
+      it 'returns a 400 response status' do
+        expect(response).to have_http_status 400
+      end
+
+      it 'returns error message' do
+        expect(response_json["error"]).to eq "Missing parameters."
       end
     end
   end
