@@ -29,12 +29,7 @@ class Api::V1::Admin::ArticlesController < ApplicationController
   def index
     articles = Article.where(published: params[:published])
     authorize(articles)
-
-    if articles.present?
-      render json: articles, each_serializer: Articles::IndexSerializer, role: current_user.role
-    else
-      render json: { error: "Missing parameters." }, status: 400
-    end
+    render json: articles, each_serializer: Articles::IndexSerializer, role: current_user.role
   end
 
   def show
