@@ -1,19 +1,13 @@
-RSpec.describe 'GET/api/admin/articles', type: :request do
+RSpec.describe 'DELETE /api/admin/articles', type: :request do
   let(:publisher)  { create(:publisher)}
   let(:publisher_credentials) { publisher.create_new_auth_token }
   let!(:publisher_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(publisher_credentials) }
-  let!(:unpublished_article) do
-    3.times do
-      create(:article)
-    end
-  end
-  let!(:published_article) { create(:article, published: true) }
+  let!(:article) { create(:article) }
 
 
-  describe 'Successfully lists unpublished articles' do
+  describe 'Successfully deletes article' do
     before do
-      get '/api/v1/admin/articles',
-      params: { published: false },
+      delete "/api/v1/admin/articles/#{article.id}",
       headers: publisher_headers
     end
     
@@ -21,43 +15,15 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
       expect(response).to have_http_status 200
     end
 
-    it 'returns 3 articles' do
-      expect(response_json['articles'].count).to eq 3
+    it 'returns success message' do
+      expect(response_json['message']).to eq "Article has been deleted"
     end
 
-    it 'returns the article writer' do
-      expect(response_json['articles'].first['journalist']).to include "user"
-    end
-  end
+    it 'returns no article' do
+      get "/api/v1/articles/#{article.id}",
+      headers: { HTTP_ACCEPT: 'application/json' }
 
-  describe 'Successfully lists published articles' do
-    before do
-      get '/api/v1/admin/articles',
-      params: { published: true },
-      headers: publisher_headers
-    end
-    
-    it 'returns a 200 response status' do
-      expect(response).to have_http_status 200
-    end
-
-    it 'returns 1 article' do
-      expect(response_json['articles'].count).to eq 1
-    end
-  end
-
-  describe 'no articles without params' do
-    before do
-      get '/api/v1/admin/articles',
-      headers: publisher_headers
-    end
-    
-    it 'returns a 200 response status' do
-      expect(response).to have_http_status 200
-    end
-
-    it 'returns 0 articles' do
-      expect(response_json['articles'].count).to eq 0
+      expect(response_json['error']).to eq 'Article not found'
     end
   end
 
@@ -68,8 +34,8 @@ RSpec.describe 'GET/api/admin/articles', type: :request do
       let!(:journalist_headers) { { HTTP_ACCEPT: 'application/json' }.merge!(journalist_credentials) }
       
       before do
-        get '/api/v1/admin/articles',
-        headers: journalist_headers
+        delete "/api/v1/admin/articles/#{article.id}",
+        headers: journalist_credentials
       end
 
       it 'returns a 404 response status' do

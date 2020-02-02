@@ -16,4 +16,12 @@ class ArticlePolicy < ApplicationPolicy
   def update?
     @user.publisher?
   end
+
+  def destroy?
+    @user.publisher?
+  end
+
+  def show?
+    @user.publisher?
+  end
 end

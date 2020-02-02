@@ -2,7 +2,7 @@ class Articles::IndexSerializer < ActiveModel::Serializer
   include ActionView::Helpers::TextHelper
   include Rails.application.routes.url_helpers
 
-  attributes :id, :title, :body, :image, :category, :location
+  attributes :id, :title, :body, :image, :category, :location, :journalist
 
   def body
     if instance_options[:role] == 'publisher'
@@ -22,5 +22,9 @@ class Articles::IndexSerializer < ActiveModel::Serializer
         object.image.service_url(expires_in: 1.hours, disposition: 'inline')
       end
     end
+  end
+
+  def journalist
+    object.journalist.uid
   end
 end
