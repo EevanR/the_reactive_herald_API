@@ -53,6 +53,11 @@ Subscriber:
 email: sub@mail.com  
 pass: password
 
+#### To write articles as journalist
+Journalist:
+email: journo@mail.com
+pass: password
+
 Or create your own account.
 
 ## Updates/Improvement plans
