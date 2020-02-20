@@ -1,4 +1,4 @@
-# The Reactive Herald Client
+# The Reactive Herald API
 
 [![Coverage Status](https://coveralls.io/repos/github/CraftAcademy/the_reactive_herald_API/badge.svg?branch=development)](https://coveralls.io/github/CraftAcademy/the_reactive_herald_API?branch=development)
 
